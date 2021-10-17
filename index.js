@@ -12,5 +12,6 @@ app.listen(PORT, () => {
 })
 
 // Import api routes
+// redirets /api to ./api/index any req coming in to express entry point get redirected to this file
 const api = require('./api/index');
 app.use('/api', api);

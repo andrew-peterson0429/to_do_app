@@ -34,18 +34,44 @@ router.post('/todo', (req, res) => {
 })
 
 // Update existing todo
-router.put('/todo', (req, res) => {
-
+router.put('/todo/:id', (req, res) => {
+    try {
+        let toDoIndex = db.toDos.findIndex(e => e.id === parseInt(req.params.id));
+        if (toDoIndex) {
+            db.toDos[toDoIndex].name = req.body.name;
+            db.toDos[toDoIndex].category = req.body.category;
+            db.toDos[toDoIndex].complete = req.body.complete;
+            res.status(200).json(formatResponse({ status: 200, data: db.toDos[toDoIndex] }))
+        } else {
+            res.status(404).json(formatResponse({ status: 404, data: `There is no item with the id of ${req.params.id} in the database`}));
+        }
+    } catch (error) {
+        res.status(500).json(formatResponse({ status: 500, data: error }))
+    }
 })
 
 // Delete todo
-router.delete('/todo', (req, res) => {
-    
+router.delete('/todo/:id', (req, res) => {
+    try {
+        let toDoIndex = db.toDos.findIndex(e => e.id === parseInt(req.params.id));
+        if (toDoIndex) {
+            db.toDos.splice(toDoIndex, 1);
+            res.status(200).json(formatResponse({status: 200, data: "Item successfully deleted"}))
+        } else {
+            res.status(404).json(formatResponse({ status: 404, data: `There is no item with the id of ${req.params.id} in the database`}));
+        }
+    }catch(error) {
+        res.status(500).json(formatResponse({ status: 500, data: error }))
+    }
 })
 
 // Get all categories
 router.get('/categories', (req, res) => {
-    
+    try {
+        res.status(200).json(formatResponse({ status: 200, data: db.categories }))
+    } catch(error) {
+        res.status(500).json(formatResponse({ status: 500, data: error }))
+    }
 })
 
 // Create new category
