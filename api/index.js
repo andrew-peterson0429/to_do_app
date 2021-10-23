@@ -28,7 +28,7 @@ class Category {
 router.get('/todos', (req, res) => {
     try {
         const { category } = req.query;
-        let returnList = category ? db.toDos.filter(e => e.category === category) : db.toDos;
+        let returnList = category ? db.toDos.filter(e => e.category.name === category) : db.toDos;
         res.status(200).json(formatResponse({ status: 200, data: returnList }));
     } catch(error) {
         console.error(error);
